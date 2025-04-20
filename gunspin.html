@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gunspin</title>
+  <link rel="icon" type="image/x-icon" href="Algebra Logo.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
+    }
+
+    /* ✨ Scrolling Star Background */
+    .stars-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: url('Stars.jpg') repeat;
+      background-size: 800px;
+      z-index: -1;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .stars-layer.one {
+      animation: starsDiagonalSlow 24s linear infinite;
+    }
+
+    .stars-layer.two {
+      animation: starsDiagonalFast 12s linear infinite;
+      opacity: 0.2;
+    }
+
+    @keyframes starsDiagonalSlow {
+      from { background-position: 0 0; }
+      to { background-position: 50% 50%; }
+    }
+
+    @keyframes starsDiagonalFast {
+      from { background-position: 0 0; }
+      to { background-position: 100% 100%; }
+    }
+
+    /* 🌌 Game Container with Glow */
+    .game-container {
+      position: relative;
+      width: 80vw;
+      max-width: 960px;
+      aspect-ratio: 16 / 9;
+      border: 3px solid white;
+      border-radius: 10px;
+      overflow: hidden;
+      background: transparent;
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+    }
+
+    iframe {
+      position: absolute;
+      top: -2%;
+      left: -1%;
+      width: 102%;
+      height: 104%;
+      border: none;
+      background: transparent;
+      overflow: hidden;
+      display: block;
+    }
+
+    .fullscreen-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+      z-index: 1;
+    }
+
+    .fullscreen-btn:hover {
+      opacity: 1;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✨ Star Background Layers -->
+  <div class="stars-layer one"></div>
+  <div class="stars-layer two"></div>
+
+  <!-- 🎮 Game Embed Container -->
+  <div class="game-container">
+    <iframe 
+      id="gameFrame" 
+      src="https://pizzaedition.win/assets/allgames/gunspin-main/index.html" 
+      allow="autoplay; fullscreen" 
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+      Your browser does not support iframes.
+    </iframe>
+    <img 
+      src="https://jiftya.github.io/AlgebraResources/Fullscreen%20Button.png" 
+      id="fullscreenBtn" 
+      class="fullscreen-btn" 
+      alt="Fullscreen" 
+      title="Fullscreen" 
+      aria-label="Enter Fullscreen">
+  </div>
+
+  <script>
+    const gameFrame = document.getElementById("gameFrame");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+
+    // Fullscreen toggle
+    function toggleFullscreen(e) {
+      e.stopPropagation();
+      const container = document.querySelector('.game-container');
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        if (container.requestFullscreen) {
+          container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+          container.webkitRequestFullscreen();
+        } else if (container.mozRequestFullScreen) {
+          container.mozRequestFullScreen();
+        } else if (container.msRequestFullscreen) {
+          container.msRequestFullscreen();
+        }
+      }
+    }
+
+    fullscreenBtn.addEventListener("click", toggleFullscreen);
+    fullscreenBtn.addEventListener("touchstart", toggleFullscreen);
+
+    // Hide fullscreen button in fullscreen mode
+    document.addEventListener("fullscreenchange", () => {
+      fullscreenBtn.classList.toggle("hidden", !!document.fullscreenElement);
+    });
+  </script>
+
+</body>
+</html>
